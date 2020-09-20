@@ -42,6 +42,11 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     border: 1px solid #6c73ce;
+    background-image: url(./images/ground_2.png);
+    border-bottom: 10px solid black;
+    border-right: 10px solid black;
+    border-radius: 45px;
+    box-shadow: 20px 14px 0px #451616;
 }
 
 .grid_item {
@@ -71,19 +76,23 @@ body {
 
 .active_field[data-direction='left'] {
     animation: left_move 0.2s ease-in-out;
-    transform: rotateY(0deg);
+    background-image: url(./images/outfit_lookingLeft.png);
+    /* transform: rotateY(0deg); */
 }
 .active_field[data-direction='right'] {
     animation: right_move 0.2s ease-in-out;
-    transform: rotateY(180deg);
+    background-image: url(./images/outfit_lookingRight.png);
+    /* transform: rotateY(180deg); */
 }
 .active_field[data-direction='top'] {
     animation: top_move 0.2s ease-in-out;
-    transform: rotate(-180deg);
+    background-image: url(./images/outfit_lookingTop.png);
+    /* transform: rotate(-180deg); */
 }
 .active_field[data-direction='bottom'] {
     animation: bottom_move 0.2s ease-in-out;
-    transform: rotate(0deg);
+    background-image: url(./images/outfit_lookingBottom.png);
+    /* transform: rotate(0deg); */
 }
 
 /* MONSTERS ANIMATIONS */
@@ -142,6 +151,7 @@ body {
     background-repeat: no-repeat;
     background-size: contain;
     transition: 0.15s;
+    background-size: 65%;
     background-position: center;
     position: relative;
 }
@@ -170,7 +180,6 @@ body {
     background-image: url(./images/raster_map.png);
     background-repeat: no-repeat;
     background-size: contain;
-    border-radius: 25%;
 }
 
 .target {

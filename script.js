@@ -4,6 +4,8 @@ let random_field;
 let pointsCounter;
 let preyCounter = document.getElementById('prey_counter');
 let direction;
+const rightWallID = [9, 18, 27, 36, 45, 54, 63, 72, 81];
+const leftWallID = [1, 10, 19, 28, 37, 46, 55, 64, 73];
 
 // Set random trees
 function randomTrees(x) {
@@ -34,8 +36,8 @@ function randomSheep(x) {
 (function setActiveField() {
     active_field.classList.add('active_field');
     active_field.setAttribute("data-direction", "bottom");
-    randomTrees(3); //NUMBER OF TREES AT START
-    randomSheep(15); //NUMBER OF SHEEPS AT START
+    randomTrees(10); //NUMBER OF TREES AT START
+    randomSheep(5); //NUMBER OF SHEEPS AT START
         
 })();
 
@@ -69,7 +71,7 @@ grid_items.forEach(e => {
         if (!this.classList.contains('target') && this.classList.contains('point_field')) {
             grid_items.forEach(e => e.classList.remove('target'))
             this.classList.add('target');
-            attackTarget();
+            //attackTarget();
         }
         else {
             grid_items.forEach(e => e.classList.remove('target'))
@@ -90,12 +92,10 @@ function gameIsOver() {
     }
 }
 
+//Player can move
 //Set active field function (by arrow key)
-document.addEventListener("keydown", function arrowEvent(e) {
+document.addEventListener("keyup", function arrowEvent(e) {
     let current_field_id = Number(active_field.id.split('_')[1]);
-   
-    const rightWallID = [9, 18, 27, 36, 45, 54, 63, 72, 81];
-    const leftWallID = [1, 10, 19, 28, 37, 46, 55, 64, 73];
 
     if (e.keyCode == 40) {
         next_id = current_field_id + 9;
@@ -160,7 +160,7 @@ function attackTarget() {
         setTimeout(function() {
             target.classList.remove('spell_field');
         }, 200)
-    }, 1000);
+    }, 1200);
 }
 
 //spell (Q) settings
@@ -217,8 +217,6 @@ function takeLoot(x) {
 function monstersMoving() {
     Array.from(document.getElementsByClassName('point_field')).forEach(e => {
         
-        const rightWallID = [9, 18, 27, 36, 45, 54, 63, 72, 81];
-        const leftWallID = [1, 10, 19, 28, 37, 46, 55, 64, 73];
         let current_field_id = Number(e.id.split('_')[1]);
         let possibleMonsterMoves = [-9,-1,1,9];
         if (rightWallID.includes(current_field_id)) {
@@ -247,6 +245,11 @@ function monstersMoving() {
             && !nextField.classList.contains('point_field')
             && !nextField.classList.contains('active_field')){
                 e.classList.remove('point_field');
+                if (e.classList.contains('target')) {
+                    e.classList.remove('target');
+                    nextField.classList.add('target');
+                    attackTarget();
+                }
                 e.removeAttribute('data-health');
                 e.removeAttribute('data-direction');
                 nextField.classList.add('point_field');
@@ -257,9 +260,10 @@ function monstersMoving() {
                 e = document.getElementsByClassName('point_field')[0];
             };
         })
+        
         setTimeout(function() {
                 monstersMoving();
-        }, 500);
+        }, 1500);
 }
 
 //need to be fixed (targets are not following preys, time steps)
