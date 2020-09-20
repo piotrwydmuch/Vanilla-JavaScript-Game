@@ -1,0 +1,4 @@
+- monsters moving
+- monsters can hurt player
+- mana for spells
+- game container (block walls)
