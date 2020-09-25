@@ -94,56 +94,82 @@ function gameIsOver() {
 
 //Player can move
 //Set active field function (by arrow key)
-document.addEventListener("keyup", function arrowEvent(e) {
+document.addEventListener("keydown", function arrowEvent(e) {
     let current_field_id = Number(active_field.id.split('_')[1]);
 
-    if (e.keyCode == 40) {
+    if (!e.ctrlKey && e.keyCode === 40) {
         next_id = current_field_id + 9;
         direction = "bottom";
         // block vertical site moving when playing
         // e.preventDefault();
-    } else if (e.keyCode == 37) {
+    } else if (!e.ctrlKey && e.keyCode === 37) {
         next_id = current_field_id - 1;
-        direction = "left";
         if (leftWallID.includes(current_field_id)) {
             next_id = current_field_id;
+        } else {
+            direction = "left";
         }
         // block vertical site moving when playing
         // e.preventDefault();
-    } else if (e.keyCode == 39) {
+    } else if (!e.ctrlKey && e.keyCode === 39) {
         next_id = current_field_id + 1;
-        direction = "right";
         if (rightWallID.includes(current_field_id)) {
             next_id = current_field_id;
+        } else {
+            direction = "right";
         }
         // block vertical site moving when playing
         // e.preventDefault();
-    } else if (e.keyCode == 38) {
+    } else if (!e.ctrlKey && e.keyCode === 38) {
         next_id = current_field_id - 9;
         direction = "top";
         // block vertical site moving when playing
         // e.preventDefault();
     }
+
     //Changing direction when stading next to wall
-    active_field.setAttribute("data-direction", direction);
-    //game container
+    //active_field.setAttribute("data-direction", direction);
+
     let nextField = document.getElementById(`field_${next_id}`);
+    //game container
     if (next_id <= grid_items.length 
         && next_id >= 1 
-        && (active_field)
+        // && (active_field)
         && !nextField.classList.contains('tree')
         && !nextField.classList.contains('point_field')){
             active_field.classList.remove('active_field');
             active_field.removeAttribute('data-direction');
             nextField.classList.add('active_field');
             nextField.setAttribute("data-direction", direction);
-            nextField.setAttribute("data-direction", direction);
+            //nextField.setAttribute("data-direction", direction);
             active_field = document.getElementsByClassName('active_field')[0];
             takeLoot(nextField);
     };
     pointScored(active_field);
     gameIsOver();
+
 })
+
+
+//Player can rotate when standing
+document.addEventListener('keydown', function(event) {
+    if (event.ctrlKey && event.keyCode == 40) {
+      direction = "bottom";
+      active_field.setAttribute("data-direction", `${direction}_stand`);      
+    }
+    else if (event.ctrlKey && event.keyCode == 37) {
+        direction = "left";
+        active_field.setAttribute("data-direction", `${direction}_stand`);
+    }
+    else if (event.ctrlKey && event.keyCode == 39) {
+        direction = "right";
+        active_field.setAttribute("data-direction", `${direction}_stand`);
+    }
+    else if (event.ctrlKey && event.keyCode == 38) {
+        direction = "top";
+        active_field.setAttribute("data-direction", `${direction}_stand`);
+    }
+  });
 
 //auto attact targets
 function attackTarget() {
@@ -169,16 +195,17 @@ document.addEventListener("keypress", function spellEvent(e) {
     let current_field_id = Number(active_field.id.split('_')[1]);
     let spell_field;
     if (e.keyCode == 113) { // Q key
-        if (spell_direction == "bottom") {
+        if (spell_direction == "bottom" || spell_direction == "bottom_stand") {
             spell_field = current_field_id + 9;
-        } else if (spell_direction == "top") {
+        } else if (spell_direction == "top" || spell_direction == "top_stand") {
             spell_field = current_field_id - 9;
-        } else if (spell_direction == "left") {
+        } else if (spell_direction == "left" || spell_direction == "left_stand") {
             spell_field = current_field_id - 1;
-        } else if (spell_direction == "right") {
+        } else if (spell_direction == "right" || spell_direction == "right_stand") {
             spell_field = current_field_id + 1;
         }  
-    } 
+    } else if (e.keyCode == 119) { // W key
+    }
     let nextSpellField = document.getElementById(`field_${spell_field}`);
     nextSpellField.classList.add('spell_field');
     setTimeout(function() {
@@ -266,7 +293,6 @@ function monstersMoving() {
         }, 1500);
 }
 
-//need to be fixed (targets are not following preys, time steps)
 (function runMonster() {
     monstersMoving()
 })();

@@ -95,6 +95,23 @@ body {
     /* transform: rotate(0deg); */
 }
 
+.active_field[data-direction='left_stand'] {
+    background-image: url(./images/outfit_lookingLeft.png);
+    /* transform: rotateY(0deg); */
+}
+.active_field[data-direction='right_stand'] {
+    background-image: url(./images/outfit_lookingRight.png);
+    /* transform: rotateY(180deg); */
+}
+.active_field[data-direction='top_stand'] {
+    background-image: url(./images/outfit_lookingTop.png);
+    /* transform: rotate(-180deg); */
+}
+.active_field[data-direction='bottom_stand'] {
+    background-image: url(./images/outfit_lookingBottom.png);
+    /* transform: rotate(0deg); */
+}
+
 /* MONSTERS ANIMATIONS */
 .point_field[data-direction='left'] {
     animation: left_move 0.2s ease-in-out;
