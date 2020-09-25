@@ -1,10 +1,40 @@
 body {
     font-family: monospace;
+    font-size: 16px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    background-color: #ebebeb;
 }
 
 .game_container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    /* display: grid;
+    grid-template-columns: 1fr 1fr 1fr; */
+}
+
+.container {
+
+}
+
+.game-title {
+    display: inline;
+    box-shadow: 3px 3px 4px #444444;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: tomato;
+    color: #fff;
+    font-weight: bold;
+}
+
+.game_panel {
+    width: 100%;
+    margin-left: 30px;
+    font-size: 1.4rem;
+}
+
+.main_container {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    padding: 0 1%;
 }
 
 .game_stats {
@@ -12,24 +42,19 @@ body {
     top:5px;
     z-index: 1;
     display: flex;
+    flex-direction: column;
+    background-color: #ebebeb;
 }
 
 .points_info {
-    left: 50%;
-    background: #fff;
-    padding: 0 5px;
 }
 
 .prey_info {
     left: 50%;
-    background: #fff;
-    padding: 0 5px;
 }
 
 .valuables_info {
     left: 50%;
-    background: #fff;
-    padding: 0 5px;
     color: #fdcf00;
 }
 
@@ -174,22 +199,22 @@ body {
 }
 
 .spell_field {
-    background-color: red;
+    background-image: url(./images/fire.png);
+    background-color: transparent;
+    background-size: cover;
     background-position: center;
-    animation: simple_spell 0.2s ease-in-out;
-    border-radius: 50%;
-    
+    animation: simple_spell 0.2s ease-in-out;    
 }
 
 @keyframes simple_spell {
     0% {
-        background-color: #ffffff;
+        background-size: 80%;
     }
     50% {
-        background-color: red;
+        background-size: 100%;
     }
     100% {
-        background-color: #ffffff;
+        background-size: 80%;
     }
 }
 
