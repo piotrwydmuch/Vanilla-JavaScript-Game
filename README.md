@@ -13,6 +13,7 @@
 * player can attack monsters with a mouse click or with spells
 * monsters leave a loot that you can collect
 * level progression
+* game has simple gameplay settings
 
 ### To do
 
