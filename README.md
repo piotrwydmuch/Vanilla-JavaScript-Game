@@ -12,11 +12,11 @@
 * on the map there are opponents who have health points
 * player can attack monsters with a mouse click or with spells
 * monsters leave a loot that you can collect
+* level progression
 
 ### To do
 
 * monsters can attact player
-* level progression
 * database integration
 * more spells, monsters and loot
 * improvement of mechanics
