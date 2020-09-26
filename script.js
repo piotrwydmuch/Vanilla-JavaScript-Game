@@ -3,6 +3,7 @@ let active_field = grid_items[4]; //start position
 let random_field;
 let pointsCounter;
 let preyCounter = document.getElementById('prey_counter');
+let levelProgress = document.getElementById('level_progress');
 let direction;
 const rightWallID = [9, 18, 27, 36, 45, 54, 63, 72, 81];
 const leftWallID = [1, 10, 19, 28, 37, 46, 55, 64, 73];
@@ -42,6 +43,18 @@ function randomSheep(x) {
 })();
 
 
+// Level progression
+function levelProgression() {
+    
+    let levelCounter = document.getElementById('level_counter');
+
+    levelProgress.value = levelProgress.value + 20;
+    if (levelProgress.value >= levelProgress.max) {
+        levelCounter.innerHTML = Number(levelCounter.innerHTML) + 1;
+        levelProgress.value = 0;
+    }
+}
+
 // Points giver (x - points can be scored by targeting or enter active field)
 function pointScored(x) { 
     if (x.classList.contains('point_field')) {
@@ -53,10 +66,12 @@ function pointScored(x) {
 
         x.classList.add('loot_field');
         dropLoot(x);
+        levelProgression();
+
 
         pointsCounter = document.getElementById("points_counter");
         pointsCounter.innerHTML = Number(pointsCounter.innerHTML) + 1;
-        randomSheep(0.6); //HOW MANY SHEEPS RESPAWN WHEN U GET POINT
+        randomSheep(2); //HOW MANY SHEEPS RESPAWN WHEN U GET POINT
         
         preyCounter.innerHTML = Number(preyCounter.innerHTML) - 1;
         let preyAmount = document.getElementsByClassName('point_field').length;
