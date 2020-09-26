@@ -53,6 +53,28 @@ function levelProgression() {
     }
 }
 
+//Game Settings (monster generator)
+let gameSettings = Array.from(document.getElementsByClassName('game_setting'));
+let sheepInfinity = document.getElementById('sheep_respawn');
+let sheepSpeed = document.getElementById('sheep_speed');
+let randomSheepAmount;
+let fasterSheeps = 1500;
+gameSettings.forEach(e => {
+    e.addEventListener('change', function() {
+        if (sheepInfinity.checked) {
+            randomSheepAmount = 3;
+        } else {
+            randomSheepAmount = 0;
+        }
+
+        if (sheepSpeed.checked) {
+            fasterSheeps = 700;
+        } else {
+            fasterSheeps = 1500;
+        }
+    })
+})
+
 // Points giver (x - points can be scored by targeting or enter active field)
 function pointScored(x) { 
     if (x.classList.contains('point_field')) {
@@ -69,7 +91,7 @@ function pointScored(x) {
 
         pointsCounter = document.getElementById("points_counter");
         pointsCounter.innerHTML = Number(pointsCounter.innerHTML) + 1;
-        randomSheep(2); //HOW MANY SHEEPS RESPAWN WHEN U GET POINT
+        randomSheep(randomSheepAmount); //HOW MANY SHEEPS RESPAWN WHEN U GET POINT
         
         preyCounter.innerHTML = Number(preyCounter.innerHTML) - 1;
         let preyAmount = document.getElementsByClassName('point_field').length;
@@ -239,7 +261,6 @@ document.addEventListener("keypress", function spellEvent(e) {
 function dropLoot(x) {
     let possibleCoinLoot = [1,2,3,4,5,6,7,8,10];
     let newCoinLoot = possibleCoinLoot[Math.floor(Math.random() * possibleCoinLoot.length)];
-    console.log(x);
     if (x.dataset.coins) { //when loot drops on the same field, it will be add
         x.dataset.coins = String(Number(x.dataset.coins) + Number(newCoinLoot));
         x.innerHTML = `${x.dataset.coins}`;
@@ -310,12 +331,14 @@ function monstersMoving() {
         
         setTimeout(function() {
                 monstersMoving();
-        }, 1500);
+        }, fasterSheeps);
 }
 
 (function runMonster() {
     monstersMoving()
 })();
+
+
 
 
 

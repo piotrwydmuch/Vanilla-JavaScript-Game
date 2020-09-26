@@ -9,18 +9,27 @@
 </head>
 
 <body>
-    <div class="container mx-auto" style="padding: 2% 1%;">
+    <div class="container mx-auto" style="padding: 10px;">
         <h1 class="text-2xl game-title">XYZ Game</h1>
+        <h2 class="game_description">Kill Monsters, collect loot and get exprience</h2>
     </div>
     <div class="main_container container mx-auto">
         
         <div class="game_panel">
             <div class="game_stats">
+                <h3>Character info</h3>
                 <p class="level_info">Character level: <span id="level_counter">1</span></p>
                 <progress id="level_progress" value="1" max="100"></progress>
                 <p class="points_info">Points counter: <span id="points_counter">0</span></p>
                 <p class="prey_info">Monsters left: <span id="prey_counter">0</span></p>
                 <p class="valuables_info">Gold coins: <span id="money_counter">0</span></p>
+            </div>
+            <div class="game_settings">
+                <h3>Game settings</h3>
+                <input type="checkbox" id="sheep_respawn" name="sheep_respawn" value="respawn" class="game_setting">
+                <label for="sheep_respawn">Sheep will be respawn infinitely</label><br>
+                <input type="checkbox" id="sheep_speed" name="sheep_speed" value="sheep_speed" class="game_setting">
+                <label for="sheep_speed">Sheep will be faster</label>
             </div>
             <p>use Q key to use spells</p>
             <p>use Ctrl + Arrow Keys to rotate</p>
