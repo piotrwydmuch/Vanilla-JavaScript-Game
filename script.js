@@ -4,6 +4,7 @@ let random_field;
 let pointsCounter;
 let preyCounter = document.getElementById('prey_counter');
 let levelProgress = document.getElementById('level_progress');
+let levelCounter = document.getElementById('level_counter');
 let direction;
 const rightWallID = [9, 18, 27, 36, 45, 54, 63, 72, 81];
 const leftWallID = [1, 10, 19, 28, 37, 46, 55, 64, 73];
@@ -45,9 +46,6 @@ function randomSheep(x) {
 
 // Level progression
 function levelProgression() {
-    
-    let levelCounter = document.getElementById('level_counter');
-
     levelProgress.value = levelProgress.value + 20;
     if (levelProgress.value >= levelProgress.max) {
         levelCounter.innerHTML = Number(levelCounter.innerHTML) + 1;
@@ -97,6 +95,25 @@ grid_items.forEach(e => {
         // console.log(target_field);
     });
 });
+
+
+//auto attact targets
+function attackTarget() {
+    let target = document.getElementsByClassName('target')[0];
+    setTimeout(function(){ 
+        target.dataset.health = String(Number(target.dataset.health) - 40);
+        if (target.dataset.health > 0) {
+            attackTarget(); //recursion method
+            target.classList.add('spell_field');
+            setTimeout(function() {
+                target.classList.remove('spell_field');
+            }, 200)
+        } else if (target.dataset.health < 0) {
+            pointScored(target); //if target have less than 0 hp, points are given
+            gameIsOver();
+        }
+    }, 1200);
+}
 
 //Checking game is over
 function gameIsOver() {
@@ -186,24 +203,6 @@ document.addEventListener('keydown', function(event) {
     }
   });
 
-//auto attact targets
-function attackTarget() {
-    let target = document.getElementsByClassName('target')[0];
-    setTimeout(function(){ 
-        target.dataset.health = String(Number(target.dataset.health) - 40);
-        if (target.dataset.health > 0) {
-            attackTarget(); //recursion method
-        } else if (target.dataset.health < 0) {
-            pointScored(target); //if target have less than 0 hp, points are given
-            gameIsOver();
-        }
-        target.classList.add('spell_field');
-        setTimeout(function() {
-            target.classList.remove('spell_field');
-        }, 200)
-    }, 1200);
-}
-
 //spell (Q) settings
 document.addEventListener("keypress", function spellEvent(e) {
     let spell_direction = active_field.dataset.direction;
@@ -240,8 +239,14 @@ document.addEventListener("keypress", function spellEvent(e) {
 function dropLoot(x) {
     let possibleCoinLoot = [1,2,3,4,5,6,7,8,10];
     let newCoinLoot = possibleCoinLoot[Math.floor(Math.random() * possibleCoinLoot.length)];
-    x.setAttribute('data-coins', newCoinLoot);
-    x.innerHTML = `${newCoinLoot}`;
+    console.log(x);
+    if (x.dataset.coins) { //when loot drops on the same field, it will be add
+        x.dataset.coins = String(Number(x.dataset.coins) + Number(newCoinLoot));
+        x.innerHTML = `${x.dataset.coins}`;
+    } else {
+        x.setAttribute('data-coins', newCoinLoot);
+        x.innerHTML = `${newCoinLoot}`;
+    }
 }
 
 //collecting money
