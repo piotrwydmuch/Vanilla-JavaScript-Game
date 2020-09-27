@@ -5,15 +5,6 @@ body {
     background-color: #ebebeb;
 }
 
-.game_container {
-    /* display: grid;
-    grid-template-columns: 1fr 1fr 1fr; */
-}
-
-.container {
-
-}
-
 .game-title {
     display: inline;
     box-shadow: 3px 3px 4px #444444;
@@ -58,6 +49,10 @@ body {
     margin-bottom: 3px;
 }
 
+.game_stats > * {
+    margin: 4px 0;
+}
+
 .game_settings {
     box-shadow: 3px 3px 4px #444444;
     padding: 10px 20px;
@@ -67,18 +62,23 @@ body {
     font-weight: bold;
 }
 
-.game_settings h3, .game_stats h3 {
+.game_shop {
+    box-shadow: 3px 3px 4px #444444;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: tomato;
+    color: #fff;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+.game_settings h3, .game_stats h3, .game_shop h3 {
     text-align: center;
-}
-
-.points_info {
-}
-
-.prey_info {
+    margin: 5px 0;
 }
 
 .valuables_info {
-    color: #ddb500;
+    color: goldenrod;
     font-weight: 600;
 }
 
@@ -222,8 +222,29 @@ body {
     position: relative;
 }
 
-.spell_field {
+.spell_field[data-weapon='none'] {
+    background-image: url(./images/normal_attack.png);
+    background-color: transparent;
+    background-size: cover;
+    background-position: center;
+    animation: simple_spell 0.2s ease-in-out;    
+}
+.spell_field[data-weapon='electric'] {
+    background-image: url(./images/electric.png);
+    background-color: transparent;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    animation: simple_spell 0.8s ease-in-out;    
+}
+.spell_field[data-weapon='fire'] {
     background-image: url(./images/fire.png);
+    background-color: transparent;
+    background-size: cover;
+    background-position: center;
+    animation: simple_spell 0.2s ease-in-out;    
+}
+.spell_field {
     background-color: transparent;
     background-size: cover;
     background-position: center;
@@ -275,4 +296,35 @@ body {
     background: red;
     top: -45px;
     position: relative;
+}
+
+.shop_item_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border: 1px solid #e2e2e2;
+    margin-bottom: 3px;
+    padding: 10px 0;
+}
+
+.shop_item_container.shop_item_available {
+    background-color: #000000a8;
+}
+.shop_item_container.shop_item_available .shop_item_img {
+    filter: opacity(0.1);
+    max-width: 50px;
+}
+
+.shop_item_container .shop_item_info p {
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+.shop_item_container.shop_item_available .shop_item_button {
+    background: goldenrod;
+    display: inline;
+}
+
+.shop_item_button {
+    display: none;
 }

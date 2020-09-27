@@ -9,9 +9,12 @@
 </head>
 
 <body>
-    <div class="container mx-auto" style="padding: 10px;">
-        <h1 class="text-2xl game-title">XYZ Game</h1>
-        <h2 class="game_description">Kill Monsters, collect loot and get exprience</h2>
+    <div class="container mx-auto" style="display: flex; justify-content: center; align-items: center; padding: 10px;">
+        <h1 class="text-2xl game-title" style="margin-right: 20px;">XYZ Game</h1>
+        <h2 class="game_description">Kill Monsters, collect loot and get exprience <br>
+            use Q key to use spells, use Ctrl + Arrow Keys to rotate</h2>
+        <p></p>
+        <p></p>
     </div>
     <div class="main_container container mx-auto">
         
@@ -24,6 +27,25 @@
                 <p class="prey_info">Monsters left: <span id="prey_counter">0</span></p>
                 <p class="valuables_info">Gold coins: <span id="money_counter">0</span></p>
             </div>
+            <div class="game_shop">
+                <h3>Game shop</h3>
+                <div id="fire_wand_item" class="shop_item_container shop_item_available" data-price="40">
+                    <img class="shop_item_img" src="./images/fire_wand.PNG" alt="Fire wand">
+                    <div class="shop_item_info">
+                        <p class="shop_item_name">Firestorm Wand</p>
+                        <p class="shop_item_price">Cost: <span class="shop_item_coins">40</span> coins</p>
+                        <button class="shop_item_button">BUY</button>
+                    </div>
+                </div>
+                <div id="electric_wand_item" class="shop_item_container shop_item_available" data-price="80">
+                    <img class="shop_item_img" src="./images/electric_wand.PNG" alt="Electric wand">
+                    <div class="shop_item_info">
+                        <p class="shop_item_name">Stormzy Wand</p>
+                        <p class="shop_item_price">Cost: <span class="shop_item_coins">80</span> coins</p>
+                        <button class="shop_item_button">BUY</button>
+                    </div>
+                </div>
+            </div>
             <div class="game_settings">
                 <h3>Game settings</h3>
                 <input type="checkbox" id="sheep_respawn" name="sheep_respawn" value="respawn" class="game_setting">
@@ -31,8 +53,6 @@
                 <input type="checkbox" id="sheep_speed" name="sheep_speed" value="sheep_speed" class="game_setting">
                 <label for="sheep_speed">Sheep will be faster</label>
             </div>
-            <p>use Q key to use spells</p>
-            <p>use Ctrl + Arrow Keys to rotate</p>
         </div>
         
         <div class="game_container">

@@ -6,6 +6,7 @@ let preyCounter = document.getElementById('prey_counter');
 let levelProgress = document.getElementById('level_progress');
 let levelCounter = document.getElementById('level_counter');
 let direction;
+let currentWeapon = 'None';
 const rightWallID = [9, 18, 27, 36, 45, 54, 63, 72, 81];
 const leftWallID = [1, 10, 19, 28, 37, 46, 55, 64, 73];
 
@@ -19,13 +20,22 @@ function randomTrees(x) {
     }
 }
 
+const Sheep = {
+    name: 'Sheep',
+    maxHp: 100,
+    exp: 10,
+    img: './images/sheep.png',
+}
+
 // Set random sheeps
 function randomSheep(x) {
     for (let i=1; i <= x; i++) { 
         random_field = grid_items[Math.floor(Math.random() * grid_items.length)];
         if (!random_field.classList.contains("tree") && !random_field.classList.contains("active_field")) { //new field can't bee tree
             random_field.classList.add("point_field");
-            random_field.setAttribute("data-health", "100");
+            random_field.setAttribute("data-health", Sheep.maxHp);
+            let random_sheep_id = Math.floor(Math.random() * 999);
+            random_field.setAttribute("data-id", random_sheep_id);
 
             let preyAmount = document.getElementsByClassName('point_field').length;
             preyCounter.innerHTML = String(preyAmount);
@@ -46,7 +56,7 @@ function randomSheep(x) {
 
 // Level progression
 function levelProgression() {
-    levelProgress.value = levelProgress.value + 20;
+    levelProgress.value = levelProgress.value + Sheep.exp;
     if (levelProgress.value >= levelProgress.max) {
         levelCounter.innerHTML = Number(levelCounter.innerHTML) + 1;
         levelProgress.value = 0;
@@ -241,8 +251,20 @@ document.addEventListener("keypress", function spellEvent(e) {
             spell_field = current_field_id + 1;
         }  
     } else if (e.keyCode == 119) { // W key
+        
     }
+
     let nextSpellField = document.getElementById(`field_${spell_field}`);
+   
+    // weapon
+    if (currentWeapon == 'None') {
+        nextSpellField.setAttribute('data-weapon', 'none');
+    } else if (currentWeapon == 'electric_wand_item') {
+        nextSpellField.setAttribute('data-weapon', 'electric');
+    } else if (currentWeapon == 'fire_wand_item') {
+        nextSpellField.setAttribute('data-weapon', 'fire');
+    }
+
     nextSpellField.classList.add('spell_field');
     setTimeout(function() {
         nextSpellField.classList.remove('spell_field');
@@ -271,10 +293,12 @@ function dropLoot(x) {
 }
 
 //collecting money
+let coinsAmmout;
+let goldCounter;
 function takeLoot(x) {
     if (x.classList.contains('loot_field')) {
-        let coinsAmmout = x.dataset.coins;
-        let goldCounter = document.getElementById("money_counter");
+        coinsAmmout = x.dataset.coins;
+        goldCounter = document.getElementById("money_counter");
         goldCounter.innerHTML = Number(goldCounter.innerHTML) + Number(coinsAmmout);
         x.classList.remove('loot_field');
         x.innerHTML = '';
@@ -297,6 +321,7 @@ function monstersMoving() {
         let next_id = current_field_id + randomMonsterMove;
         let nextField = document.getElementById(`field_${next_id}`);
         let currentDataHealth = e.dataset.health;
+        let currentDataId = e.dataset.id;
         let monsterDirection;
         if (randomMonsterMove == 9) {
             monsterDirection = "bottom";
@@ -318,9 +343,11 @@ function monstersMoving() {
                     nextField.classList.add('target');
                     attackTarget();
                 }
+                e.removeAttribute('data-id');
                 e.removeAttribute('data-health');
                 e.removeAttribute('data-direction');
                 nextField.classList.add('point_field');
+                nextField.setAttribute("data-id", currentDataId);
                 nextField.setAttribute("data-health", currentDataHealth);
                 nextField.setAttribute("data-direction", monsterDirection);
                 //nextField.dataset = currentDataset;
@@ -334,9 +361,29 @@ function monstersMoving() {
         }, fasterSheeps);
 }
 
+
+// Start Monster Movinf
 (function runMonster() {
     monstersMoving()
 })();
+
+
+//Game Shop shop_item_available
+let buyItemBtn = Array.from(document.getElementsByClassName('shop_item_button'));
+buyItemBtn.forEach(e => {
+    e.addEventListener('click', function() {
+        let availableGold = Number(money_counter.innerHTML);
+        let shopItem = this.parentElement.parentElement;
+        let itemPrice = shopItem.dataset.price;
+        if (availableGold >= itemPrice) {
+            shopItem.classList.remove('shop_item_available');
+            goldCounter.innerHTML = String(availableGold - itemPrice);
+            currentWeapon = shopItem.id;
+        } else {
+            alert(`You don't have enough gold :(`)
+        }
+    })
+})
 
 
 
