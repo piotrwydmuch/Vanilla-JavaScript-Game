@@ -14,6 +14,7 @@
 * monsters leave a loot that you can collect
 * level progression
 * game has simple gameplay settings
+* item shop
 
 ### To do
 
