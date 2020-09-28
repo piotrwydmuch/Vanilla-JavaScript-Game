@@ -72,10 +72,14 @@ let fasterSheeps = 1500;
 gameSettings.forEach(e => {
     e.addEventListener('change', function() {
         if (sheepInfinity.checked) {
-            randomSheepAmount = 3;
+            localStorage.setItem('randomSheepAmount', 3);
         } else {
-            randomSheepAmount = 0;
+            localStorage.setItem('randomSheepAmount', 0);
         }
+
+        //local storage settings (bugs, need fix)
+        randomSheepAmount = Number(localStorage.getItem('randomSheepAmount'));
+
 
         if (sheepSpeed.checked) {
             fasterSheeps = 700;
@@ -86,16 +90,16 @@ gameSettings.forEach(e => {
 })
 
 // Points giver (x - points can be scored by targeting or enter active field)
-function pointScored(x) { 
-    if (x.classList.contains('point_field')) {
-        x.classList.remove('point_field');
+function pointScored(scoredType) { 
+    if (scoredType.classList.contains('point_field')) {
+        scoredType.classList.remove('point_field');
         // If sheep was a target
-        if (x.classList.contains('target')) {
+        if (scoredType.classList.contains('target')) {
             grid_items.forEach(e => e.classList.remove('target'));
         }
 
-        x.classList.add('loot_field');
-        dropLoot(x);
+        scoredType.classList.add('loot_field');
+        dropLoot(scoredType);
         levelProgression();
 
 
@@ -189,6 +193,8 @@ document.addEventListener("keydown", function arrowEvent(e) {
         direction = "top";
         // block vertical site moving when playing
         // e.preventDefault();
+    } else {
+        return;
     }
 
     //Changing direction when stading next to wall
@@ -232,7 +238,7 @@ document.addEventListener('keydown', function(event) {
     else if (event.ctrlKey && event.keyCode == 38) {
         direction = "top";
         active_field.setAttribute("data-direction", `${direction}_stand`);
-    }
+    } 
   });
 
 //spell (Q) settings
@@ -250,9 +256,11 @@ document.addEventListener("keypress", function spellEvent(e) {
         } else if (spell_direction == "right" || spell_direction == "right_stand") {
             spell_field = current_field_id + 1;
         }  
-    } else if (e.keyCode == 119) { // W key
-        
+    } else {
+        return;
     }
+    // (e.keyCode == 119) { // W key 
+    // } 
 
     let nextSpellField = document.getElementById(`field_${spell_field}`);
    
@@ -280,28 +288,28 @@ document.addEventListener("keypress", function spellEvent(e) {
 });
 
 //loot is droped when prey dies
-function dropLoot(x) {
+function dropLoot(lootField) {
     let possibleCoinLoot = [1,2,3,4,5,6,7,8,10];
     let newCoinLoot = possibleCoinLoot[Math.floor(Math.random() * possibleCoinLoot.length)];
-    if (x.dataset.coins) { //when loot drops on the same field, it will be add
-        x.dataset.coins = String(Number(x.dataset.coins) + Number(newCoinLoot));
-        x.innerHTML = `${x.dataset.coins}`;
+    if (lootField.dataset.coins) { //when loot drops on the same field, it will be add
+        lootField.dataset.coins = String(Number(lootField.dataset.coins) + Number(newCoinLoot));
+        lootField.innerHTML = `${lootField.dataset.coins}`;
     } else {
-        x.setAttribute('data-coins', newCoinLoot);
-        x.innerHTML = `${newCoinLoot}`;
+        lootField.setAttribute('data-coins', newCoinLoot);
+        lootField.innerHTML = `${newCoinLoot}`;
     }
 }
 
 //collecting money
 let coinsAmmout;
 let goldCounter;
-function takeLoot(x) {
-    if (x.classList.contains('loot_field')) {
-        coinsAmmout = x.dataset.coins;
+function takeLoot(lootField) {
+    if (lootField.classList.contains('loot_field')) {
+        coinsAmmout = lootField.dataset.coins;
         goldCounter = document.getElementById("money_counter");
         goldCounter.innerHTML = Number(goldCounter.innerHTML) + Number(coinsAmmout);
-        x.classList.remove('loot_field');
-        x.innerHTML = '';
+        lootField.classList.remove('loot_field');
+        lootField.innerHTML = '';
     }
 }
 
@@ -384,6 +392,8 @@ buyItemBtn.forEach(e => {
         }
     })
 })
+
+
 
 
 
