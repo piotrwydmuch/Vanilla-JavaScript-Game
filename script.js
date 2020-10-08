@@ -81,11 +81,8 @@ gameSettings.forEach(e => {
         randomSheepAmount = Number(localStorage.getItem('randomSheepAmount'));
 
 
-        if (sheepSpeed.checked) {
-            fasterSheeps = 700;
-        } else {
-            fasterSheeps = 1500;
-        }
+        sheepSpeed.checked ? fasterSheeps = 700 : fasterSheeps = 1500;
+        
     })
 })
 
