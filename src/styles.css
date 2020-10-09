@@ -87,6 +87,53 @@ body {
     font-size: 1.2rem;
 }
 
+#best_level_counter, #best_points_counter, #best_money_counter {
+    padding-left: 10px;
+    color: #000000;
+}
+
+#health_points {
+    width: 50%;
+    background: #dedede;
+}
+
+#health_points[value]::-webkit-progress-bar {
+    background-color: rgb(228, 228, 228);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+}
+
+#health_points[value="80"]::-webkit-progress-value { 
+    background: rgb(114, 160, 102); 
+}
+#health_points[value="70"]::-webkit-progress-value { 
+    background: rgb(114, 160, 102); 
+}
+#health_points[value="60"]::-webkit-progress-value { 
+    background: rgb(255, 230, 0); 
+}
+#health_points[value="50"]::-webkit-progress-value { 
+    background: rgb(255, 230, 0); 
+}
+#health_points[value="40"]::-webkit-progress-value { 
+    background: rgb(255, 115, 0); 
+}
+#health_points[value="30"]::-webkit-progress-value { 
+    background: rgb(255, 115, 0); 
+}
+#health_points[value="20"]::-webkit-progress-value { 
+    background: rgb(250, 0, 0); 
+}
+#health_points[value="10"]::-webkit-progress-value { 
+    background: rgb(250, 0, 0); 
+}
+#health_points[value="1"]::-webkit-progress-value { 
+    background: rgb(0, 0, 0); 
+}
+
+.stats_container {
+    display: flex;
+}
+
 .grid_container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -159,6 +206,10 @@ body {
 .active_field[data-direction='bottom_stand'] {
     background-image: url(../images/outfit_lookingBottom.png);
     /* transform: rotate(0deg); */
+}
+.active_field.player_is_dead {
+    background-image: url(../images/playerdead.png);
+
 }
 
 /* MONSTERS ANIMATIONS */
@@ -277,15 +328,31 @@ body {
     content: "";
     width: 100%;
     height: 6px;
-    background: green;
+    background: rgb(57, 204, 20);
+    top: -45px;
+    position: relative;
+}
+.point_field[data-health='80']:after {
+    content: "";
+    width: 80%;
+    height: 6px;
+    background: orange;
     top: -45px;
     position: relative;
 }
 .point_field[data-health='60']:after {
     content: "";
-    width: 50%;
+    width: 60%;
     height: 6px;
-    background: orange;
+    background: rgb(255, 230, 0);
+    top: -45px;
+    position: relative;
+}
+.point_field[data-health='40']:after {
+    content: "";
+    width: 40%;
+    height: 6px;
+    background: rgb(255, 115, 0);
     top: -45px;
     position: relative;
 }

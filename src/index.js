@@ -20,12 +20,44 @@ const setRandomTrees = (x) => {
     }
 }
 
+const Player = {
+    maxHp: 100,
+    dmg: 20,
+}
+
 const Sheep = {
     name: 'Sheep',
     maxHp: 100,
     exp: 10,
+    dmg: 10,
     img: './images/sheep.png',
 }
+
+const savePlayerBestLevel = () => {
+    const playerRecord = JSON.parse(localStorage.getItem("BestLevel"));
+    if (playerRecord.best_level_counter < levelCounter.innerHTML) {
+        const playerBestLevel = {best_level_counter: levelCounter.innerHTML}
+        localStorage.setItem("BestLevel", JSON.stringify(playerBestLevel));
+    }
+}
+
+const savePlayerMoneyRecord = () => {
+    const playerRecord = JSON.parse(localStorage.getItem("MoneyRecord"));
+    if (playerRecord.best_money_record < goldCounter.innerHTML) {
+        const playerMoneyRecord = {best_money_record: goldCounter.innerHTML}
+        localStorage.setItem("MoneyRecord", JSON.stringify(playerMoneyRecord));
+    }
+}
+
+const savePlayerPointsRecord = () => {
+    const playerRecord = JSON.parse(localStorage.getItem("PointsRecord"));
+    if (playerRecord.best_points_record < pointsCounter.innerHTML) {
+        const playerPointsRecord = {best_points_record: pointsCounter.innerHTML}
+        localStorage.setItem("PointsRecord", JSON.stringify(playerPointsRecord));
+    }
+}
+// best_points_counter: pointsCounter.innerHTML,
+// best_money_counter: goldCounter.innerHTML,
 
 const setRandomSheep = (x) => {
     for (let i=1; i <= x; i++) { 
@@ -37,8 +69,7 @@ const setRandomSheep = (x) => {
             random_field.setAttribute("data-id", random_sheep_id);
 
             let preyAmount = document.getElementsByClassName('point_field').length;
-            preyCounter.innerHTML = String(preyAmount);
-            
+            preyCounter.innerHTML = String(preyAmount);            
         }
     }
 }
@@ -57,6 +88,7 @@ const levelProgression = () => {
     if (levelProgress.value >= levelProgress.max) {
         levelCounter.innerHTML = Number(levelCounter.innerHTML) + 1;
         levelProgress.value = 0;
+        savePlayerBestLevel();
     }
 }
 
@@ -98,6 +130,7 @@ const pointScored = (scoredType) => {
 
         pointsCounter = document.getElementById("points_counter");
         pointsCounter.innerHTML = Number(pointsCounter.innerHTML) + 1;
+        savePlayerPointsRecord();
         setRandomSheep(randomSheepAmount); //HOW MANY SHEEPS RESPAWN WHEN U GET POINT
         
         preyCounter.innerHTML = Number(preyCounter.innerHTML) - 1;
@@ -105,7 +138,6 @@ const pointScored = (scoredType) => {
         preyCounter.innerHTML = String(preyAmount);
     }
 }
-
 
 //Set target (by cursor click)
 grid_items.forEach(e => {
@@ -270,8 +302,8 @@ document.addEventListener("keypress", function spellEvent(e) {
     }, 200)
     
     if (nextSpellField.classList.contains('point_field')) {
-        nextSpellField.dataset.health = String(Number(nextSpellField.dataset.health) - 80);
-        if (nextSpellField.dataset.health < 0) {
+        nextSpellField.dataset.health = String(Number(nextSpellField.dataset.health) - Player.dmg);
+        if (nextSpellField.dataset.health <= 0) {
             pointScored(nextSpellField); //if target have less than 0 hp, points are given
             checkGameIsOver();
         }
@@ -293,14 +325,14 @@ const dropLoot = (lootField) => {
 
 //collecting money
 let coinsAmmout;
-let goldCounter;
+let goldCounter = document.getElementById("money_counter");
 const takeLoot = (lootField) => {
     if (lootField.classList.contains('loot_field')) {
         coinsAmmout = lootField.dataset.coins;
-        goldCounter = document.getElementById("money_counter");
         goldCounter.innerHTML = Number(goldCounter.innerHTML) + Number(coinsAmmout);
         lootField.classList.remove('loot_field');
         lootField.innerHTML = '';
+        savePlayerMoneyRecord();
     }
 }
 
@@ -351,12 +383,41 @@ const monstersMoving = () => {
                 //nextField.dataset = currentDataset;
                 //nextField.setAttribute("data-direction", direction);
                 e = document.getElementsByClassName('point_field')[0];
-            };
+                monsterAttack(nextField);
+            }
         })
         
         setTimeout(function() {
                 monstersMoving();
         }, fasterSheeps);
+}
+
+const monsterAttack = (currentMonsterPossition) => {
+    const curentMonsterField = Number(currentMonsterPossition.dataset.field);
+    const currentPlayerField = Number(active_field.dataset.field);
+    let playerHP = document.getElementById('health_points');
+    
+    if (curentMonsterField + 9 == currentPlayerField) {
+        playerHP.value = playerHP.value - Sheep.dmg;
+    } else if (curentMonsterField - 9 == currentPlayerField) {       
+        playerHP.value = playerHP.value - Sheep.dmg;
+    } else if (curentMonsterField + 1 == currentPlayerField) {
+        playerHP.value = playerHP.value - Sheep.dmg;    
+    } else if (curentMonsterField - 1 == currentPlayerField) {
+        playerHP.value = playerHP.value - Sheep.dmg;
+    }
+
+    if (playerHP.value <= 0) {
+        (() => {
+            active_field.classList.add('player_is_dead');
+            setTimeout(function(){ 
+                alert('U are dead', location.reload());
+            }, 500);
+            playerHP.value = 1;
+
+        })()
+    }
+
 }
 
 // Start Monster Moving
@@ -380,6 +441,9 @@ buyItemBtn.forEach(e => {
         }
     })
 })
+
+
+
 
 
 

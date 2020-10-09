@@ -16,10 +16,10 @@
 * level progression
 * game has simple gameplay settings
 * item shop
+* monsters can attact player
 
 ### To do
 
-* monsters can attact player
 * database integration
 * more spells, monsters and loot
 * improvement of mechanics
