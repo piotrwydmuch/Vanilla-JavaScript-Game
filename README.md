@@ -1,6 +1,6 @@
-# Vanilla-JavaScript-Game
+# MiniRPG-JavaScript-Game
 
-## JS game project - side project
+## JS game side project
 ## https://sleepy-shockley-a79a9e.netlify.app/
 
 ![Game Screen](/images/game-info.PNG)
