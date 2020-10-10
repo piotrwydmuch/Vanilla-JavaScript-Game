@@ -33,31 +33,31 @@ const Sheep = {
     img: './images/sheep.png',
 }
 
-const savePlayerBestLevel = () => {
-    const playerRecord = JSON.parse(localStorage.getItem("BestLevel"));
-    if (playerRecord.best_level_counter < levelCounter.innerHTML) {
-        const playerBestLevel = {best_level_counter: levelCounter.innerHTML}
-        localStorage.setItem("BestLevel", JSON.stringify(playerBestLevel));
-    }
-}
+// const savePlayerBestLevel = () => {
+//     const playerRecord = JSON.parse(localStorage.getItem("BestLevel"));
+//     localStorage.setItem("BestLevel", JSON.stringify(levelCounter.innerHTML));
+//     if (playerRecord.best_level_counter < levelCounter.innerHTML) {
+//         const playerBestLevel = {best_level_counter: levelCounter.innerHTML}
+//         localStorage.setItem("BestLevel", JSON.stringify(playerBestLevel));
+//     }
+// }
 
-const savePlayerMoneyRecord = () => {
-    const playerRecord = JSON.parse(localStorage.getItem("MoneyRecord"));
-    if (playerRecord.best_money_record < goldCounter.innerHTML) {
-        const playerMoneyRecord = {best_money_record: goldCounter.innerHTML}
-        localStorage.setItem("MoneyRecord", JSON.stringify(playerMoneyRecord));
-    }
-}
+// const savePlayerMoneyRecord = () => {
+//     const playerRecord = JSON.parse(localStorage.getItem("MoneyRecord"));
+//     if (playerRecord.best_money_record < goldCounter.innerHTML) {
+//         const playerMoneyRecord = {best_money_record: goldCounter.innerHTML}
+//         localStorage.setItem("MoneyRecord", JSON.stringify(playerMoneyRecord));
+//     }
+// }
 
-const savePlayerPointsRecord = () => {
-    const playerRecord = JSON.parse(localStorage.getItem("PointsRecord"));
-    if (playerRecord.best_points_record < pointsCounter.innerHTML) {
-        const playerPointsRecord = {best_points_record: pointsCounter.innerHTML}
-        localStorage.setItem("PointsRecord", JSON.stringify(playerPointsRecord));
-    }
-}
-// best_points_counter: pointsCounter.innerHTML,
-// best_money_counter: goldCounter.innerHTML,
+// const savePlayerPointsRecord = () => {
+//     const playerRecord = JSON.parse(localStorage.getItem("PointsRecord"));
+//     if (playerRecord.best_points_record < pointsCounter.innerHTML) {
+//         const playerPointsRecord = {best_points_record: pointsCounter.innerHTML}
+//         localStorage.setItem("PointsRecord", JSON.stringify(playerPointsRecord));
+//     }
+// }
+
 
 const setRandomSheep = (x) => {
     for (let i=1; i <= x; i++) { 
@@ -88,7 +88,7 @@ const levelProgression = () => {
     if (levelProgress.value >= levelProgress.max) {
         levelCounter.innerHTML = Number(levelCounter.innerHTML) + 1;
         levelProgress.value = 0;
-        savePlayerBestLevel();
+        //savePlayerBestLevel();
     }
 }
 
@@ -130,7 +130,7 @@ const pointScored = (scoredType) => {
 
         pointsCounter = document.getElementById("points_counter");
         pointsCounter.innerHTML = Number(pointsCounter.innerHTML) + 1;
-        savePlayerPointsRecord();
+        //savePlayerPointsRecord();
         setRandomSheep(randomSheepAmount); //HOW MANY SHEEPS RESPAWN WHEN U GET POINT
         
         preyCounter.innerHTML = Number(preyCounter.innerHTML) - 1;
@@ -292,8 +292,10 @@ document.addEventListener("keypress", function spellEvent(e) {
         nextSpellField.setAttribute('data-weapon', 'none');
     } else if (currentWeapon == 'electric_wand_item') {
         nextSpellField.setAttribute('data-weapon', 'electric');
+        Player.dmg = "60";
     } else if (currentWeapon == 'fire_wand_item') {
         nextSpellField.setAttribute('data-weapon', 'fire');
+        Player.dmg = "40";
     }
 
     nextSpellField.classList.add('spell_field');
@@ -332,7 +334,7 @@ const takeLoot = (lootField) => {
         goldCounter.innerHTML = Number(goldCounter.innerHTML) + Number(coinsAmmout);
         lootField.classList.remove('loot_field');
         lootField.innerHTML = '';
-        savePlayerMoneyRecord();
+        //savePlayerMoneyRecord();
     }
 }
 
@@ -392,19 +394,36 @@ const monstersMoving = () => {
         }, fasterSheeps);
 }
 
+const playerGetHit = () => {
+    let currentField = active_field;
+    currentField.style.filter= "opacity(0.2)";
+    setTimeout(() => {
+        currentField.style.filter = "none";
+    }, 200);
+}
+
 const monsterAttack = (currentMonsterPossition) => {
     const curentMonsterField = Number(currentMonsterPossition.dataset.field);
     const currentPlayerField = Number(active_field.dataset.field);
     let playerHP = document.getElementById('health_points');
+    const playerHPvalue = document.getElementById('health_points_value');
     
     if (curentMonsterField + 9 == currentPlayerField) {
         playerHP.value = playerHP.value - Sheep.dmg;
+        playerHPvalue.innerHTML = playerHP.value;
+        playerGetHit();
     } else if (curentMonsterField - 9 == currentPlayerField) {       
         playerHP.value = playerHP.value - Sheep.dmg;
+        playerHPvalue.innerHTML = playerHP.value;
+        playerGetHit();
     } else if (curentMonsterField + 1 == currentPlayerField) {
         playerHP.value = playerHP.value - Sheep.dmg;    
+        playerHPvalue.innerHTML = playerHP.value;
+        playerGetHit();
     } else if (curentMonsterField - 1 == currentPlayerField) {
         playerHP.value = playerHP.value - Sheep.dmg;
+        playerHPvalue.innerHTML = playerHP.value;
+        playerGetHit();
     }
 
     if (playerHP.value <= 0) {
@@ -414,7 +433,6 @@ const monsterAttack = (currentMonsterPossition) => {
                 alert('U are dead', location.reload());
             }, 500);
             playerHP.value = 1;
-
         })()
     }
 
@@ -440,6 +458,11 @@ buyItemBtn.forEach(e => {
             alert(`You don't have enough gold :(`)
         }
     })
+})
+
+const pauseGameBtn = document.getElementById("pause_game_btn");
+pauseGameBtn.addEventListener("click", () => {
+    alert("Game paused. Click ok to resume.")
 })
 
 

@@ -90,6 +90,7 @@ body {
 #best_level_counter, #best_points_counter, #best_money_counter {
     padding-left: 10px;
     color: #000000;
+    display: none;
 }
 
 #health_points {
@@ -273,14 +274,22 @@ body {
     position: relative;
 }
 
-.spell_field[data-weapon='none'] {
+.spell_field[data-weapon='none']:before {
+    content: "";
+    position: absolute;
+    width: 80px;
+    height: 80px;
     background-image: url(../images/normal_attack.png);
     background-color: transparent;
     background-size: cover;
     background-position: center;
     animation: simple_spell 0.2s ease-in-out;    
 }
-.spell_field[data-weapon='electric'] {
+.spell_field[data-weapon='electric']:before {
+    content: "";
+    position: absolute;
+    width: 80px;
+    height: 80px;
     background-image: url(../images/electric.png);
     background-color: transparent;
     background-size: cover;
@@ -288,14 +297,12 @@ body {
     border-radius: 50%;
     animation: simple_spell 0.8s ease-in-out;    
 }
-.spell_field[data-weapon='fire'] {
+.spell_field[data-weapon='fire']:before {
+    content: "";
+    position: absolute;
+    width: 80px;
+    height: 80px;
     background-image: url(../images/fire.png);
-    background-color: transparent;
-    background-size: cover;
-    background-position: center;
-    animation: simple_spell 0.2s ease-in-out;    
-}
-.spell_field {
     background-color: transparent;
     background-size: cover;
     background-position: center;
@@ -390,6 +397,9 @@ body {
     font-size: 0.8rem;
     margin: 0;
 }
+.shop_item_container.shop_item_available .shop_item_button:hover, .settings_button:hover {
+    cursor: pointer;
+}
 
 .shop_item_container.shop_item_available .shop_item_button {
     background: goldenrod;
@@ -398,4 +408,11 @@ body {
 
 .shop_item_button {
     display: none;
+}
+
+.settings_button {
+    background: goldenrod;
+    display: block;
+    padding: 5px 10px;
+    margin: 10px 0;
 }

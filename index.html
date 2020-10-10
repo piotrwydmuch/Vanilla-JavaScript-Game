@@ -21,7 +21,7 @@
         
         <div class="game_panel">
             <div class="game_stats">
-                <h3>Character stats (records)</h3>
+                <h3>Character stats</h3>
                 <div class="stats_container">
                     <div>
                         <p class="level_info">Character level: <span id="level_counter">1</span><span id="best_level_counter">1</span></p>
@@ -57,11 +57,13 @@
                 <label for="sheep_respawn">Sheep will be respawn infinitely</label><br>
                 <input type="checkbox" id="sheep_speed" name="sheep_speed" value="sheep_speed" class="game_setting">
                 <label for="sheep_speed">Sheep will be faster</label>
+                <button id="pause_game_btn" class="settings_button">Pause Game</button>
             </div>
         </div>
         
         <div class="game_container">
             <progress id="health_points" value="100" max="100"></progress>
+            <span>HP: </span><span id="health_points_value">100</span>
             <div class="grid_container">
                 <div id="field_1" data-field="1" class="grid_item grid_item_1"></div>
                 <div id="field_2" data-field="2" class="grid_item grid_item_2"></div>
