@@ -53,10 +53,23 @@
             </div>
             <div class="game_settings">
                 <h3>Game settings</h3>
-                <input type="checkbox"  id="sheep_respawn" name="sheep_respawn" value="respawn" class="game_setting">
-                <label for="sheep_respawn">Sheep will be respawn infinitely</label><br>
-                <input type="checkbox" id="sheep_speed" name="sheep_speed" value="sheep_speed" class="game_setting">
-                <label for="sheep_speed">Sheep will be faster</label>
+                <input type="checkbox" checked id="sheep_respawn" name="sheep_respawn" value="respawn" class="game_setting">
+                <label for="sheep_respawn">Monsters will be respawn infinitely</label><br>
+                Monsters movement:
+                <div class="monster_speed_container">
+                    <div>
+                        <input class="monsterSpeed" type="radio" id="normalSpeed" name="monsterSpeed" value="normal" checked>
+                        <label for="normalSpeed">Normal</label>
+                    </div>
+                    <div>
+                        <input class="monsterSpeed" type="radio" id="fastSpeed" name="monsterSpeed" value="fast">
+                        <label for="fastSpeed">Fast</label>
+                    </div>
+                    <div>
+                        <input class="monsterSpeed" type="radio" id="extremelyFastSpeed" name="monsterSpeed" value="extreme">
+                        <label for="extremelyFastSpeed">Extremely fast</label>
+                    </div>
+                </div>
                 <button id="pause_game_btn" class="settings_button">Pause Game</button>
             </div>
         </div>

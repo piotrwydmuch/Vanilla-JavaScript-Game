@@ -1,9 +1,14 @@
-# MiniRPG-JavaScript-Game
+# MiniRPG-JavaScript-Game⚔️
 
 ## JS game side project
 ## https://sleepy-shockley-a79a9e.netlify.app/
 
 ![Game Screen](/images/game-info.PNG)
+
+### Demo
+
+🔻You can check the game at this link🔻
+https://sleepy-shockley-a79a9e.netlify.app/
 
 ### Features
 

@@ -179,7 +179,7 @@ body {
 }
 #health_points[value="13"]::-webkit-progress-value { 
     background: rgb(250, 0, 0); 
-}k
+}
 #health_points[value="14"]::-webkit-progress-value { 
     background: rgb(250, 0, 0); 
 }
@@ -201,6 +201,10 @@ body {
 
 .stats_container {
     display: flex;
+}
+
+.stats_container  p {
+    margin: 5px 0;
 }
 
 .grid_container {
@@ -284,18 +288,22 @@ body {
 /* MONSTERS ANIMATIONS */
 .point_field[data-direction='left'] {
     animation: left_move 0.2s ease-in-out;
+    background-image: url(../images/monsterLeft.png);
     /* transform: rotate(-90deg); */
 }
 .point_field[data-direction='right'] {
     animation: right_move 0.2s ease-in-out;
+    background-image: url(../images/monsterRight.png);
     /* transform: rotate(90deg); */
 }
 .point_field[data-direction='top'] {
     animation: top_move 0.2s ease-in-out;
+    background-image: url(../images/monsterTop.png);
     /* transform: rotate(0deg); */
 }
 .point_field[data-direction='bottom'] {
     animation: bottom_move 0.2s ease-in-out;
+    background-image: url(../images/monsterBottom.png);
     /* transform: rotate(-180deg); */
 }
   
@@ -333,11 +341,11 @@ body {
 }
 
 .point_field {
-    background-image: url(../images/sheep.png);
+    background-image: url(../images/monsterBottom.png);
     background-repeat: no-repeat;
     background-size: contain;
     transition: 0.15s;
-    background-size: 65%;
+    background-size: 125%;
     background-position: center;
     position: relative;
 }

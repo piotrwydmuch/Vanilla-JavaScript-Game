@@ -1,20 +1,44 @@
+let monsterMovementExtremlyFast = document.getElementById('extremelyFastSpeed');
+let gameSettings = Array.from(document.getElementsByClassName('game_setting'));
+const monsterSpeedSettings = Array.from(document.getElementsByClassName('monsterSpeed'));
 let grid_items = Array.from(document.getElementsByClassName("grid_item"));
-let active_field = grid_items[4]; //start position
-let random_field;
-let pointsCounter;
-let preyCounter = document.getElementById('prey_counter');
-let levelProgress = document.getElementById('level_progress');
-let levelCounter = document.getElementById('level_counter');
-let direction;
-let currentWeapon = 'None';
-let playerMP = document.getElementById('mana_points');
-let playerMPvalue = document.getElementById('mana_points_value');
-let playerHP = document.getElementById('health_points');
 let playerHPvalue = document.getElementById('health_points_value');
+let monsterMovementNormal = document.getElementById('normalSpeed');
+let playerMPvalue = document.getElementById('mana_points_value');
+const pauseGameBtn = document.getElementById("pause_game_btn");
+let monsterMovementFast = document.getElementById('fastSpeed');
+let levelProgress = document.getElementById('level_progress');
+let sheepInfinity = document.getElementById('sheep_respawn');
+let levelCounter = document.getElementById('level_counter');
+let goldCounter = document.getElementById("money_counter");
+let preyCounter = document.getElementById('prey_counter');
+let playerHP = document.getElementById('health_points');
+let playerMP = document.getElementById('mana_points');
 const rightWallID = [9, 18, 27, 36, 45, 54, 63, 72, 81];
 const leftWallID = [1, 10, 19, 28, 37, 46, 55, 64, 73];
+let active_field = grid_items[4]; //start position
+let currentWeapon = 'None';
+let randomSheepAmount = 2;
+let monsterSpeed = 1500;
+let playerIsLive = true;
+let direction;
+let random_field;
+let pointsCounter;
+let coinsAmmout;
 
-// Set random trees
+const Player = {
+    maxHp: 100,
+    dmg: 20,
+}
+
+const Monster = {
+    name: 'Sheep',
+    maxHp: 100,
+    exp: 20,
+    dmg: 10,
+    img: './images/sheep.png',
+}
+
 const setRandomTrees = (x) => {
     for (let i=1; i <= x; i++) {
         rand_tree = grid_items[Math.floor(Math.random() * grid_items.length)];
@@ -24,18 +48,6 @@ const setRandomTrees = (x) => {
     }
 }
 
-const Player = {
-    maxHp: 100,
-    dmg: 20,
-}
-
-const Sheep = {
-    name: 'Sheep',
-    maxHp: 100,
-    exp: 10,
-    dmg: 10,
-    img: './images/sheep.png',
-}
 
 // const savePlayerBestLevel = () => {
 //     const playerRecord = JSON.parse(localStorage.getItem("BestLevel"));
@@ -68,7 +80,7 @@ const setRandomSheep = (x) => {
         random_field = grid_items[Math.floor(Math.random() * grid_items.length)];
         if (!random_field.classList.contains("tree") && !random_field.classList.contains("active_field")) { //new field can't bee tree
             random_field.classList.add("point_field");
-            random_field.setAttribute("data-health", Sheep.maxHp);
+            random_field.setAttribute("data-health", Monster.maxHp);
             let random_sheep_id = Math.floor(Math.random() * 999);
             random_field.setAttribute("data-id", random_sheep_id);
 
@@ -83,12 +95,12 @@ const setRandomSheep = (x) => {
     active_field.classList.add('active_field');
     active_field.setAttribute("data-direction", "bottom");
     setRandomTrees(10); //NUMBER OF TREES AT START
-    setRandomSheep(5); //NUMBER OF SHEEPS AT START
+    setRandomSheep(5); //NUMBER OF MONSTERS AT START
         
 })();
 
 const levelProgression = () => {
-    levelProgress.value = levelProgress.value + Sheep.exp;
+    levelProgress.value = levelProgress.value + Monster.exp;
     if (levelProgress.value >= levelProgress.max) {
         levelCounter.innerHTML = Number(levelCounter.innerHTML) + 1;
         levelProgress.value = 0;
@@ -97,11 +109,6 @@ const levelProgression = () => {
 }
 
 //Game Settings (monster generator)
-let gameSettings = Array.from(document.getElementsByClassName('game_setting'));
-let sheepInfinity = document.getElementById('sheep_respawn');
-let sheepSpeed = document.getElementById('sheep_speed');
-let randomSheepAmount;
-let fasterSheeps = 1500;
 gameSettings.forEach(e => {
     e.addEventListener('change', function() {
         if (sheepInfinity.checked) {
@@ -113,8 +120,19 @@ gameSettings.forEach(e => {
         //local storage settings (bugs, need fix)
         randomSheepAmount = Number(localStorage.getItem('randomSheepAmount'));
 
-        sheepSpeed.checked ? fasterSheeps = 700 : fasterSheeps = 1500;
         
+    })
+})
+
+monsterSpeedSettings.map(setting => {
+    setting.addEventListener("change", () => {
+        if (monsterMovementExtremlyFast.checked) {
+            monsterSpeed = 250;
+        } else if (monsterMovementFast.checked) {
+            monsterSpeed = 700;
+        } else if (monsterSpeed.checked) {
+            monsterSpeed = 1500;
+        }
     })
 })
 
@@ -192,36 +210,38 @@ const checkGameIsOver = () => {
 document.addEventListener("keydown", function arrowEvent(e) {
     let current_field_id = Number(active_field.id.split('_')[1]);
 
-    if (!e.ctrlKey && e.keyCode === 40) {
-        next_id = current_field_id + 9;
-        direction = "bottom";
-        // block vertical site moving when playing
-        // e.preventDefault();
-    } else if (!e.ctrlKey && e.keyCode === 37) {
-        next_id = current_field_id - 1;
-        if (leftWallID.includes(current_field_id)) {
-            next_id = current_field_id;
+    if (playerIsLive) {
+        if (!e.ctrlKey && e.keyCode === 40) {
+            next_id = current_field_id + 9;
+            direction = "bottom";
+            // block vertical site moving when playing
+            // e.preventDefault();
+        } else if (!e.ctrlKey && e.keyCode === 37) {
+            next_id = current_field_id - 1;
+            if (leftWallID.includes(current_field_id)) {
+                next_id = current_field_id;
+            } else {
+                direction = "left";
+            }
+            // block vertical site moving when playing
+            // e.preventDefault();
+        } else if (!e.ctrlKey && e.keyCode === 39) {
+            next_id = current_field_id + 1;
+            if (rightWallID.includes(current_field_id)) {
+                next_id = current_field_id;
+            } else {
+                direction = "right";
+            }
+            // block vertical site moving when playing
+            // e.preventDefault();
+        } else if (!e.ctrlKey && e.keyCode === 38) {
+            next_id = current_field_id - 9;
+            direction = "top";
+            // block vertical site moving when playing
+            // e.preventDefault();
         } else {
-            direction = "left";
+            return;
         }
-        // block vertical site moving when playing
-        // e.preventDefault();
-    } else if (!e.ctrlKey && e.keyCode === 39) {
-        next_id = current_field_id + 1;
-        if (rightWallID.includes(current_field_id)) {
-            next_id = current_field_id;
-        } else {
-            direction = "right";
-        }
-        // block vertical site moving when playing
-        // e.preventDefault();
-    } else if (!e.ctrlKey && e.keyCode === 38) {
-        next_id = current_field_id - 9;
-        direction = "top";
-        // block vertical site moving when playing
-        // e.preventDefault();
-    } else {
-        return;
     }
 
     //Changing direction when stading next to wall
@@ -395,8 +415,6 @@ const dropLoot = (lootField) => {
 }
 
 //collecting money
-let coinsAmmout;
-let goldCounter = document.getElementById("money_counter");
 const takeLoot = (lootField) => {
     if (lootField.classList.contains('loot_field')) {
         coinsAmmout = lootField.dataset.coins;
@@ -460,7 +478,7 @@ const monstersMoving = () => {
         
         setTimeout(function() {
                 monstersMoving();
-        }, fasterSheeps);
+        }, monsterSpeed);
 }
 
 const playerGetHit = () => {
@@ -476,19 +494,19 @@ const monsterAttack = (currentMonsterPossition) => {
     const currentPlayerField = Number(active_field.dataset.field);
     
     if (curentMonsterField + 9 == currentPlayerField) {
-        playerHP.value = playerHP.value - Sheep.dmg;
+        playerHP.value = playerHP.value - Monster.dmg;
         playerHPvalue.innerHTML = playerHP.value;
         playerGetHit();
     } else if (curentMonsterField - 9 == currentPlayerField) {       
-        playerHP.value = playerHP.value - Sheep.dmg;
+        playerHP.value = playerHP.value - Monster.dmg;
         playerHPvalue.innerHTML = playerHP.value;
         playerGetHit();
     } else if (curentMonsterField + 1 == currentPlayerField) {
-        playerHP.value = playerHP.value - Sheep.dmg;    
+        playerHP.value = playerHP.value - Monster.dmg;    
         playerHPvalue.innerHTML = playerHP.value;
         playerGetHit();
     } else if (curentMonsterField - 1 == currentPlayerField) {
-        playerHP.value = playerHP.value - Sheep.dmg;
+        playerHP.value = playerHP.value - Monster.dmg;
         playerHPvalue.innerHTML = playerHP.value;
         playerGetHit();
     }
@@ -496,9 +514,10 @@ const monsterAttack = (currentMonsterPossition) => {
     if (playerHP.value <= 0) {
         (() => {
             active_field.classList.add('player_is_dead');
+            playerIsLive = false;
             setTimeout(function(){ 
                 alert('U are dead', location.reload());
-            }, 500);
+            }, 1500);
             playerHP.value = 1;
         })()
     }
@@ -527,7 +546,6 @@ buyItemBtn.forEach(e => {
     })
 })
 
-const pauseGameBtn = document.getElementById("pause_game_btn");
 pauseGameBtn.addEventListener("click", () => {
     alert("Game paused. Click ok to resume.")
 })
