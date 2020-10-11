@@ -93,15 +93,23 @@ body {
     display: none;
 }
 
+#mana_points {
+    width: 40%;
+    background: #dedede;
+}
+#mana_points::-webkit-progress-value { 
+    background: rgb(191, 37, 230); 
+}
+
 #health_points {
-    width: 50%;
+    width: 40%;
     background: #dedede;
 }
 
-#health_points[value]::-webkit-progress-bar {
+/* #health_points[value]::-webkit-progress-bar {
     background-color: rgb(228, 228, 228);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
-}
+} */
 
 #health_points[value="80"]::-webkit-progress-value { 
     background: rgb(114, 160, 102); 

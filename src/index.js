@@ -7,6 +7,10 @@ let levelProgress = document.getElementById('level_progress');
 let levelCounter = document.getElementById('level_counter');
 let direction;
 let currentWeapon = 'None';
+let playerMP = document.getElementById('mana_points');
+let playerMPvalue = document.getElementById('mana_points_value');
+let playerHP = document.getElementById('health_points');
+let playerHPvalue = document.getElementById('health_points_value');
 const rightWallID = [9, 18, 27, 36, 45, 54, 63, 72, 81];
 const leftWallID = [1, 10, 19, 28, 37, 46, 55, 64, 73];
 
@@ -269,6 +273,9 @@ document.addEventListener("keypress", function spellEvent(e) {
     let spell_direction = active_field.dataset.direction;
     let current_field_id = Number(active_field.id.split('_')[1]);
     let spell_field;
+    let AOEspellField;
+    let nextSpellField;
+    let nextAOESpellField;
     if (e.keyCode == 113) { // Q key
         if (spell_direction == "bottom" || spell_direction == "bottom_stand") {
             spell_field = current_field_id + 9;
@@ -278,39 +285,101 @@ document.addEventListener("keypress", function spellEvent(e) {
             spell_field = current_field_id - 1;
         } else if (spell_direction == "right" || spell_direction == "right_stand") {
             spell_field = current_field_id + 1;
+        }
+        nextSpellField = document.getElementById(`field_${spell_field}`);  
+            // weapon
+        if (currentWeapon == 'None' && playerMP.value >= 2) {
+            nextSpellField.setAttribute('data-weapon', 'none');
+            playerMP.value = playerMP.value - 2;
+            playerMPvalue.innerHTML = playerMP.value;
+        } else if (currentWeapon == 'electric_wand_item' && playerMP.value >= 3) {
+            nextSpellField.setAttribute('data-weapon', 'electric');
+            Player.dmg = "60";
+            playerMP.value = playerMP.value - 3;
+            playerMPvalue.innerHTML = playerMP.value;
+        } else if (currentWeapon == 'fire_wand_item' && playerMP.value >= 4) {
+            nextSpellField.setAttribute('data-weapon', 'fire');
+            Player.dmg = "40";
+            playerMP.value = playerMP.value - 4;
+            playerMPvalue.innerHTML = playerMP.value;
+        } else {
+            return;
+        }
+        nextSpellField.classList.add('spell_field');
+        setTimeout(function() {
+            nextSpellField.classList.remove('spell_field');
+        }, 200)
+        if (nextSpellField.classList.contains('point_field')) {
+            nextSpellField.dataset.health = String(Number(nextSpellField.dataset.health) - Player.dmg);
+            if (nextSpellField.dataset.health <= 0) {
+                pointScored(nextSpellField); //if target have less than 0 hp, points are given
+                checkGameIsOver();
+            }
+        }
+
+    }  else if (e.keyCode == 119) { // W key
+        if (spell_direction == "bottom" || spell_direction == "bottom_stand") {
+            AOEspellField = [current_field_id + 9, current_field_id + 17, current_field_id + 18, current_field_id + 19];
+        } else if (spell_direction == "top" || spell_direction == "top_stand") {
+            AOEspellField = [current_field_id - 9, current_field_id - 17, current_field_id - 18, current_field_id - 19];
+        } else if (spell_direction == "left" || spell_direction == "left_stand") {
+            AOEspellField = [current_field_id - 1, current_field_id - 2, current_field_id - 11, current_field_id + 7];
+        } else if (spell_direction == "right" || spell_direction == "right_stand") {
+            AOEspellField = [current_field_id + 1, current_field_id + 2, current_field_id + 11, current_field_id - 7];
         }  
+        nextAOESpellField = AOEspellField.map(field => {
+            let nextSpellField = document.getElementById(`field_${field}`);
+            // weapon
+            if (currentWeapon == 'None' && playerMP.value >= 6) {
+                nextSpellField.setAttribute('data-weapon', 'none');
+                playerMP.value = playerMP.value - 1.5;
+                playerMPvalue.innerHTML = playerMP.value;
+            } else if (currentWeapon == 'electric_wand_item' && playerMP.value >= 8) {
+                nextSpellField.setAttribute('data-weapon', 'electric');
+                playerMP.value = playerMP.value - 2;
+                playerMPvalue.innerHTML = playerMP.value;
+                Player.dmg = "60";
+            } else if (currentWeapon == 'fire_wand_item' && playerMP.value >= 10) {
+                playerMP.value = playerMP.value - 2.5;
+                playerMPvalue.innerHTML = playerMP.value;
+                nextSpellField.setAttribute('data-weapon', 'fire');
+                Player.dmg = "40";
+            } else {
+                return;
+            }
+            nextSpellField.classList.add('spell_field');
+            setTimeout(function() {
+                nextSpellField.classList.remove('spell_field');
+            }, 200)
+            
+            if (nextSpellField.classList.contains('point_field')) {
+                nextSpellField.dataset.health = String(Number(nextSpellField.dataset.health) - Player.dmg);
+                if (nextSpellField.dataset.health <= 0) {
+                    pointScored(nextSpellField); //if target have less than 0 hp, points are given
+                    checkGameIsOver();
+                }
+            }
+        })
     } else {
         return;
     }
-    // (e.keyCode == 119) { // W key 
-    // } 
-
-    let nextSpellField = document.getElementById(`field_${spell_field}`);
-   
-    // weapon
-    if (currentWeapon == 'None') {
-        nextSpellField.setAttribute('data-weapon', 'none');
-    } else if (currentWeapon == 'electric_wand_item') {
-        nextSpellField.setAttribute('data-weapon', 'electric');
-        Player.dmg = "60";
-    } else if (currentWeapon == 'fire_wand_item') {
-        nextSpellField.setAttribute('data-weapon', 'fire');
-        Player.dmg = "40";
-    }
-
-    nextSpellField.classList.add('spell_field');
-    setTimeout(function() {
-        nextSpellField.classList.remove('spell_field');
-    }, 200)
-    
-    if (nextSpellField.classList.contains('point_field')) {
-        nextSpellField.dataset.health = String(Number(nextSpellField.dataset.health) - Player.dmg);
-        if (nextSpellField.dataset.health <= 0) {
-            pointScored(nextSpellField); //if target have less than 0 hp, points are given
-            checkGameIsOver();
-        }
-    }
 });
+
+(() => {
+    setInterval(() => {
+        if (playerMP.value < 100) {
+            playerMP.value = playerMP.value + 5;
+            playerMPvalue.innerHTML = playerMP.value;
+        }
+    }, 2000);
+    setInterval(() => {
+        if (playerHP.value < 100) {
+            playerHP.value = playerHP.value + 2;
+            playerHPvalue.innerHTML = playerHP.value;
+        }
+    }, 3000);
+})()
+
 
 //loot is droped when prey dies
 const dropLoot = (lootField) => {
@@ -405,8 +474,6 @@ const playerGetHit = () => {
 const monsterAttack = (currentMonsterPossition) => {
     const curentMonsterField = Number(currentMonsterPossition.dataset.field);
     const currentPlayerField = Number(active_field.dataset.field);
-    let playerHP = document.getElementById('health_points');
-    const playerHPvalue = document.getElementById('health_points_value');
     
     if (curentMonsterField + 9 == currentPlayerField) {
         playerHP.value = playerHP.value - Sheep.dmg;
