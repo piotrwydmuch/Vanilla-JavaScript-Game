@@ -111,32 +111,92 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
 } */
 
-#health_points[value="80"]::-webkit-progress-value { 
+#health_points[value="100"]::-webkit-progress-value { 
+    background: rgb(32, 158, 0); 
+}
+#health_points[value^="9"]::-webkit-progress-value { 
     background: rgb(114, 160, 102); 
 }
-#health_points[value="70"]::-webkit-progress-value { 
+#health_points[value^="8"]::-webkit-progress-value { 
     background: rgb(114, 160, 102); 
 }
-#health_points[value="60"]::-webkit-progress-value { 
+#health_points[value^="7"]::-webkit-progress-value { 
     background: rgb(255, 230, 0); 
 }
-#health_points[value="50"]::-webkit-progress-value { 
+#health_points[value^="6"]::-webkit-progress-value { 
     background: rgb(255, 230, 0); 
 }
-#health_points[value="40"]::-webkit-progress-value { 
+#health_points[value^="5"]::-webkit-progress-value { 
+    background: rgb(255, 230, 0); 
+}
+#health_points[value^="4"]::-webkit-progress-value { 
     background: rgb(255, 115, 0); 
 }
-#health_points[value="30"]::-webkit-progress-value { 
-    background: rgb(255, 115, 0); 
+#health_points[value^="3"]::-webkit-progress-value { 
+    background: rgb(255, 115, 0);
 }
-#health_points[value="20"]::-webkit-progress-value { 
-    background: rgb(250, 0, 0); 
+#health_points[value^="2"]::-webkit-progress-value { 
+    background: rgb(255, 115, 0);
 }
+
+/* 1-9 hp colors */
+#health_points[value="1"]::-webkit-progress-value { 
+    background: rgb(87, 12, 12); 
+}
+#health_points[value="2"]::-webkit-progress-value { 
+    background: rgb(87, 12, 12); 
+}
+#health_points[value="3"]::-webkit-progress-value { 
+    background: rgb(87, 12, 12); 
+}k
+#health_points[value="4"]::-webkit-progress-value { 
+    background: rgb(87, 12, 12); 
+}
+#health_points[value="5"]::-webkit-progress-value { 
+    background: rgb(87, 12, 12); 
+}
+#health_points[value="6"]::-webkit-progress-value { 
+    background: rgb(87, 12, 12); 
+}
+#health_points[value="7"]::-webkit-progress-value { 
+    background: rgb(87, 12, 12); 
+}
+#health_points[value="8"]::-webkit-progress-value { 
+    background: rgb(87, 12, 12); 
+}
+#health_points[value="9"]::-webkit-progress-value { 
+    background: rgb(87, 12, 12); 
+}
+/* 10-19 hp colors */
 #health_points[value="10"]::-webkit-progress-value { 
     background: rgb(250, 0, 0); 
 }
-#health_points[value="1"]::-webkit-progress-value { 
-    background: rgb(0, 0, 0); 
+#health_points[value="11"]::-webkit-progress-value { 
+    background: rgb(250, 0, 0); 
+}
+#health_points[value="12"]::-webkit-progress-value { 
+    background: rgb(250, 0, 0); 
+}
+#health_points[value="13"]::-webkit-progress-value { 
+    background: rgb(250, 0, 0); 
+}k
+#health_points[value="14"]::-webkit-progress-value { 
+    background: rgb(250, 0, 0); 
+}
+#health_points[value="15"]::-webkit-progress-value { 
+    background: rgb(250, 0, 0); 
+}
+#health_points[value="16"]::-webkit-progress-value { 
+    background: rgb(250, 0, 0); 
+}
+#health_points[value="17"]::-webkit-progress-value { 
+    background: rgb(250, 0, 0); 
+}
+#health_points[value="18"]::-webkit-progress-value { 
+    background: rgb(250, 0, 0); 
+}
+#health_points[value="19"]::-webkit-progress-value { 
+    background: rgb(250, 0, 0); 
 }
 
 .stats_container {
