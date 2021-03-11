@@ -1,7 +1,7 @@
 # MiniRPG-JavaScript-Game⚔️
 
 ## JS game side project
-## 🔻currently working on v2: rewriting all logic to OOP, changing physics of players, monsters and map settings🔻
+## 🔻currently working on v2: new tools (engine, physics), rewriting all logic to OOP, changing physics of players, monsters and map settings🔻
 
 ![Game Screen](/images/game-info.PNG)
 
