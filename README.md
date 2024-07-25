@@ -1,14 +1,9 @@
-# MiniRPG-JavaScript-Game⚔️
-
-## JS game side project
-## 🔻currently working on v2: new tools (engine, physics), rewriting all logic to OOP, changing physics of players, monsters and map settings🔻
-
-![Game Screen](/images/game-info.PNG)
-
-### Demo
+# JavaScript Game side project
 
 You can test it here:
 https://sleepy-shockley-a79a9e.netlify.app/
+
+![Game Screen](/images/game-info.PNG)
 
 ### Features
 
@@ -22,12 +17,3 @@ https://sleepy-shockley-a79a9e.netlify.app/
 * game has simple gameplay settings
 * item shop
 * monsters can attact player
-
-### To do
-
-* currently working on v2: rewriting all logic to OOP, changing physics of players, monsters and map settings
-* database integration
-* more spells, monsters and loot
-* improvement of mechanics
-* refactoring and optimization 
-* much more...
