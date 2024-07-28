@@ -1,4 +1,4 @@
-# JavaScript Game side project
+#  HTML, JavaScript Game side project 
 
 You can test it here:
 https://sleepy-shockley-a79a9e.netlify.app/
